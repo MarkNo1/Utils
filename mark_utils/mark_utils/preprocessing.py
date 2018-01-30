@@ -1,30 +1,64 @@
 
-def torch(x):
-    import torch
-    """
-        Preprocessing the x data with zero meand and unitary variance
-        Arguments:
-                    x -- numpy ndarray
-        Returns:
-                    standardize -- data standardize (torch Tensor)
-    """
-    x = torch.from_numpy(x)
-    standardize = (torch.div(x - torch.mean(x, 0), torch.std(x, 0)))
-    return standardize
+class Standardize():
+    @staticmethod
+    def torch(x):
+        import torch
+        """
+            Preprocessing the x data with zero meand and unitary variance
+            Arguments:
+                        x -- numpy ndarray
+            Returns:
+                        standardized -- data standardize (torch Tensor)
+        """
+        x = torch.from_numpy(x)
+        standardized = (torch.div(x - torch.mean(x, 0), torch.std(x, 0)))
+        return standardized
+
+    @staticmethod
+    def numpy(x, bessel_correction=True):
+        import numpy as np
+        """
+            Preprocessing the x data with zero meand and unitary variance
+            Arguments:
+                        x -- numpy ndarray
+            Returns:
+                        standardized -- data standardize (numpy ndarray)
+        """
+        if besse_correction:
+            standardized = (x - np.mean(x, 0)) / np.std(x, 0, ddof=1)
+        else:
+            standardized = (x - np.mean(x, 0)) / np.std(x, 0)
+
+        return standardized
 
 
-def numpy(x, besse_correction=True):
-    import numpy as np
-    """
-        Preprocessing the x data with zero meand and unitary variance
-        Arguments:
-                    x -- numpy ndarray
-        Returns:
-                    standardize -- data standardize (numpy ndarray)
-    """
-    if besse_correction:
-        standardize = (x - np.mean(x, 0)) / np.std(x, 0, ddof=1)
-    else:
-        standardize = (x - np.mean(x, 0)) / np.std(x, 0)
+class Normalize():
+    def torch(x):
+        import torch
+        """
+                Preprocessing the x data with zero meand and unitary variance
+                Arguments:
+                            x -- numpy ndarray
+                Returns:
+                            standardize -- data standardize (torch Tensor)
+            """
+        x = torch.from_numpy(x)
+        max_ = torch.max(x, 0)[0]
+        normilized = torch.div(x, max_)
 
-    return standardize
+        return normilized
+
+    @staticmethod
+    def numpy(x):
+        import numpy as np
+        """
+                Preprocessing the x data with zero meand and unitary variance
+                Arguments:
+                            x -- numpy ndarray
+                Returns:
+                            standardize -- data standardize (numpy ndarray)
+            """
+
+        normilized = x / x.max(axis=0)
+
+        return normilized

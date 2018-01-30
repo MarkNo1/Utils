@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
 Name: mark-utils
-Version: 0.1
+Version: 0.0.4
 Summary: Some MachineLearning Utils
-Home-page: http://github.com/ewencp/foo
+Home-page: https://github.com/MarkNo1/Utils
 Author: Marco Treglia
 Author-email: marcotreglia1@gmail.com
 License: BSD
