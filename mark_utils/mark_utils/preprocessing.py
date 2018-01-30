@@ -3,6 +3,7 @@ class Standardize():
     @staticmethod
     def torch(x):
         import torch
+        import numpy as np
         """
             Preprocessing the x data with zero meand and unitary variance
             Arguments:
@@ -10,7 +11,11 @@ class Standardize():
             Returns:
                         standardized -- data standardize (torch Tensor)
         """
-        x = torch.from_numpy(x)
+
+        # Convert to Tensor
+        if isinstance(x, np.ndarray):
+            x = torch.from_numpy(x)
+
         standardized = (torch.div(x - torch.mean(x, 0), torch.std(x, 0)))
         return standardized
 
@@ -24,7 +29,7 @@ class Standardize():
             Returns:
                         standardized -- data standardize (numpy ndarray)
         """
-        if besse_correction:
+        if bessel_correction:
             standardized = (x - np.mean(x, 0)) / np.std(x, 0, ddof=1)
         else:
             standardized = (x - np.mean(x, 0)) / np.std(x, 0)
@@ -35,6 +40,7 @@ class Standardize():
 class Normalize():
     def torch(x):
         import torch
+        import numpy as np
         """
                 Preprocessing the x data with zero meand and unitary variance
                 Arguments:
@@ -42,7 +48,10 @@ class Normalize():
                 Returns:
                             standardize -- data standardize (torch Tensor)
             """
-        x = torch.from_numpy(x)
+        # Convert to Tensor
+        if isinstance(x, np.ndarray):
+            x = torch.from_numpy(x)
+
         max_ = torch.max(x, 0)[0]
         normilized = torch.div(x, max_)
 

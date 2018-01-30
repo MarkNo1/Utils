@@ -1,58 +1,62 @@
 
 
-def torch(x, k):
-    """
-        Reduce dimensionality with the principal components analisys.
-        Using torch library. (more accurate then numpy)
-        Arguments:
-            x -- numpy ndarray or torch tensor
-            k -- dimensionality of the output
-        Returns:
-            components -- data projected into a lower dimensionality
-    """
-    import torch
-    import numpy as np
+class PCA():
 
-    # Convert to DoubleTensor
-    if isinstance(x, np.ndarray):
-        x = torch.from_numpy(x)
-
-    # SVD
-    U, S, V = torch.svd(x.t())
-    components = torch.mm(x, U[:, :k])
-
-    return - components
-
-
-def numpy(x, k):
-    """
+    @staticmethod
+    def torch(x, k):
+        """
             Reduce dimensionality with the principal components analisys.
-            Using sklearn.decomposition
+            Using torch library. (more accurate then numpy)
             Arguments:
                 x -- numpy ndarray or torch tensor
                 k -- dimensionality of the output
             Returns:
                 components -- data projected into a lower dimensionality
-    """
-    from sklearn.decomposition import PCA
+        """
+        import torch
+        import numpy as np
 
-    pca = PCA(k)
-    components = pca.fit_transform(x)
+        # Convert to DoubleTensor
+        if isinstance(x, np.ndarray):
+            x = torch.from_numpy(x)
 
-    return components
+        # SVD
+        U, S, V = torch.svd(x.t())
+        components = torch.mm(x, U[:, :k])
+
+        return - components
+
+    @staticmethod
+    def numpy(x, k):
+        """
+                Reduce dimensionality with the principal components analisys.
+                Using sklearn.decomposition
+                Arguments:
+                    x -- numpy ndarray or torch tensor
+                    k -- dimensionality of the output
+                Returns:
+                    components -- data projected into a lower dimensionality
+        """
+        from sklearn.decomposition import PCA
+
+        pca = PCA(k)
+        components = pca.fit_transform(x)
+
+        return components
 
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from sklearn import datasets
+    from mark_utils.preprocessing import Standardize
     import numpy as np
 
     iris = datasets.load_iris()
     x = iris.data
     y = iris.target
 
-    x = preprocessing_torch(x)
-    x_pca = torch_pca(x, 2)
+    x = Standardize.torch(x)
+    x_pca = PCA.torch(x, 2)
 
     # To numpy
     x_pca = x_pca.numpy()
