@@ -48,9 +48,10 @@ class Scraper():
 
     def get_single_element_BY(self, target):
         element = None
+        assert isinstance(
+            target, dict), 'Target must be a dictionary with key:value [type:target]'
         try:
-            _type = target['type']
-            _target = target['name']
+            _type, _target = target.popitem()
 
             if _type is CLASS:
                 element = self.__get_element_by_class(_target)
@@ -116,9 +117,10 @@ class Scraper():
 
     def find_elements_BY(self, element, target):
         nested_element = None
+        assert isinstance(
+            target, dict), 'Target must be a dictionary with key:value [type:target]'
         try:
-            _type = target['type']
-            _target = target['name']
+            _type, _target = target.popitem()
 
             if _type is CLASS:
                 nested_element = self.__find_elements_by_class(
