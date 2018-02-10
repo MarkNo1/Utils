@@ -11,7 +11,7 @@ import pkg_resources
 
 pkg_name = 'mark_utils'
 geckodriver_file = 'web_driver/geckodriver'
-CLASS, ID, XPATH, TAG, LINK = 'class', 'id', 'xpath', 'tag', 'link'
+CLASS, ID, XPATH, TAG, LINK = 'CLASS', 'ID', 'XPATH', 'TAG', 'LINK'
 
 
 class Scraper():
