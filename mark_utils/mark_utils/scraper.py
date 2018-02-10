@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import os
@@ -22,7 +23,10 @@ class Scraper():
         profile.set_preference("browser.cache.memory.enable", False)
         profile.set_preference("browser.cache.offline.enable", False)
         profile.set_preference("network.http.use-cache", False)
-        self.webBrowser = webdriver.Firefox(firefox_profile=profile, executable_path=path)
+        options = Options()
+        options.add_argument('-headless')
+        self.webBrowser = webdriver.Firefox(
+            firefox_profile=profile, executable_path=path, firefox_options=options)
 
         self.delay = delay
         self.log = log
