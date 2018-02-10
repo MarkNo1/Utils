@@ -4,6 +4,7 @@ setup.cfg
 setup.py
 mark_utils/__init__.py
 mark_utils/pca.py
+mark_utils/pcap.py
 mark_utils/preprocessing.py
 mark_utils/scraper.py
 mark_utils.egg-info/PKG-INFO
