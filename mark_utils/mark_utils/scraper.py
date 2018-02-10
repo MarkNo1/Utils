@@ -17,12 +17,12 @@ class Scraper():
     def __init__(self, delay=7, log=False):
         # Binary path
         path = pkg_resources.resource_filename(pkg_name, geckodriver_file)
-        profile = webdriver.FirefoxProfile(path)
+        profile = webdriver.FirefoxProfile()
         profile.set_preference("browser.cache.disk.enable", False)
         profile.set_preference("browser.cache.memory.enable", False)
         profile.set_preference("browser.cache.offline.enable", False)
         profile.set_preference("network.http.use-cache", False)
-        self.webBrowser = webdriver.Firefox(profile)
+        self.webBrowser = webdriver.Firefox(firefox_profile=profile, executable_path=path)
 
         self.delay = delay
         self.log = log
