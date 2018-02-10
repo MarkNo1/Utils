@@ -59,9 +59,9 @@ class Scraper():
             else:
                 print('Error - Type ( {} ).'.format(_type))
 
-        except NoSuchElementException:
-            print('{} -> {} - is not present in the page: {} !'.format(_type, _target,
-                                                                       self.webBrowser.current_url))
+        except e:
+            print('Exception: {}. \n {} -> {} - is not present in the page: {}'.format(e, _type, _target,
+                                                                                       self.webBrowser.current_url))
 
         finally:
             if self.log and element is not None:

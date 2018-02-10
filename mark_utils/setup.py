@@ -8,7 +8,7 @@ setup(name="mark_utils",
       platforms=["any"],
       license="BSD",
       url="https://github.com/MarkNo1/Utils",
-      download="https://github.com/MarkNo1/Utils/archive/0.1.1.tar.gz",
+      download="https://github.com/MarkNo1/Utils/archive/0.1.3.tar.gz",
       packages=find_packages(),
       include_package_data=True,
       )
