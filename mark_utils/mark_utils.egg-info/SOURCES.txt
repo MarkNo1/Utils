@@ -12,3 +12,4 @@ mark_utils.egg-info/PKG-INFO
 mark_utils.egg-info/SOURCES.txt
 mark_utils.egg-info/dependency_links.txt
 mark_utils.egg-info/top_level.txt
+mark_utils/web_driver/geckodriver
