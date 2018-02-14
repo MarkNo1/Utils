@@ -6,6 +6,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as expected
 from selenium.webdriver.common.by import By
 import os
+from mark_utils.color import Color as c
 from time import sleep
 import pkg_resources
 
@@ -15,10 +16,17 @@ CLASS, ID, XPATH, TAG, LINK = 'CLASS', 'ID', 'XPATH', 'TAG', 'LINK'
 
 
 class Scraper():
-    def __init__(self, delay=10, log=False, headless=False):
+    def __init__(self, delay=10, log=False, headless=False, tor=False):
         # Binary path
         path = pkg_resources.resource_filename(pkg_name, geckodriver_file)
         profile = webdriver.FirefoxProfile()
+        if tor:
+            print(c.red('Warning '), c.blue(
+                'Be sure you have Tor browser opened in backgroud!'))
+            print('Tor Proxy', c.green('Enabled'))
+            profile.set_preference('network.proxy.type', 1)
+            profile.set_preference('network.proxy.socks', '127.0.0.1')
+            profile.set_preference('network.proxy.socks_port', 9150)
         profile.set_preference("browser.cache.disk.enable", False)
         profile.set_preference("browser.cache.memory.enable", False)
         profile.set_preference("browser.cache.offline.enable", False)
@@ -37,7 +45,7 @@ class Scraper():
     def openUrl(self, url):
         self.webBrowser.get(url)
         if self.log:
-            print('Page changed to : {}'.format(url))
+            print('Page: {}'.format(c.orange(url)))
 
     def make_target(type_, name):
         return dict(type=type_, name=name)
@@ -53,7 +61,8 @@ class Scraper():
         assert isinstance(
             target, dict), 'Target must be a dictionary with key:value [type:target]'
         try:
-            _type, _target = target.popitem()
+            c_target = target.copy()
+            _type, _target = c_target.popitem()
 
             if _type is CLASS:
                 element = self.__get_element_by_class(_target)
@@ -72,7 +81,7 @@ class Scraper():
 
         finally:
             if self.log and element is not None:
-                print('{} -> {} - founded correctly!'.format(_type, _target))
+                print('{} ---> {}'.format(c.blue(_type), c.green(_target)))
             return element
 
     def get_multiple_element_BY(self, target_list):
@@ -105,7 +114,7 @@ class Scraper():
         first_target = list_target[0]
         nested_target = list_target[1:]
 
-        element = self.presence_of_element_located(first_target)
+        element = self.get_single_element_BY(first_target)
 
         for target in nested_target:
             element = self.find_elements_BY(element, target)
@@ -122,7 +131,8 @@ class Scraper():
         assert isinstance(
             target, dict), 'Target must be a dictionary with key:value [type:target]'
         try:
-            _type, _target = target.popitem()
+            c_target = target.copy()
+            _type, _target = c_target.popitem()
 
             if _type is CLASS:
                 nested_element = self.__find_elements_by_class(
@@ -144,7 +154,7 @@ class Scraper():
 
         finally:
             if self.log and nested_element is not None:
-                print('{} -> {} - founded correctly!'.format(_type, _target))
+                print('{} ---> {}'.format(c.blue(_type), c.green(_target)))
             return nested_element
 
     def __find_elements_by_class(self, element, className):
