@@ -14,6 +14,9 @@ pkg_name = 'mark_utils'
 geckodriver_file = 'web_driver/geckodriver'
 CLASS, ID, XPATH, TAG, LINK = 'CLASS', 'ID', 'XPATH', 'TAG', 'LINK'
 
+proxyIP = '127.0.0.1'
+proxyPort = 9150
+
 
 class Scraper():
     def __init__(self, delay=10, log=False, headless=False, tor=False):
@@ -21,12 +24,21 @@ class Scraper():
         path = pkg_resources.resource_filename(pkg_name, geckodriver_file)
         profile = webdriver.FirefoxProfile()
         if tor:
-            print(c.red('Warning '), c.blue(
-                'Be sure you have Tor browser opened in backgroud!'))
+            print(c.blue('Warning - Be sure you have Tor browser opened in backgroud!'))
             print('Tor Proxy', c.green('Enabled'))
+
             profile.set_preference('network.proxy.type', 1)
-            profile.set_preference('network.proxy.socks', '127.0.0.1')
-            profile.set_preference('network.proxy.socks_port', 9150)
+            profile.set_preference('network.proxy.socks', proxyIP)
+            profile.set_preference('network.proxy.socks_port', proxyPort)
+
+            profile.set_preference("network.proxy.ssl", proxyIP)
+            profile.set_preference("network.proxy.ssl_port", proxyPort)
+            profile.set_preference("network.proxy.socks", proxyIP)
+            profile.set_preference("network.proxy.socks_port", proxyPort)
+            profile.set_preference("network.proxy.socks_remote_dns", True)
+            profile.set_preference("network.proxy.ftp", proxyIP)
+            profile.set_preference("network.proxy.ftp_port", proxyPort)
+
         profile.set_preference("browser.cache.disk.enable", False)
         profile.set_preference("browser.cache.memory.enable", False)
         profile.set_preference("browser.cache.offline.enable", False)
@@ -47,8 +59,11 @@ class Scraper():
         if self.log:
             print('Page: {}'.format(c.orange(url)))
 
+    def current_url(self):
+        return self.webBrowser.current_url
+
     def make_target(type_, name):
-        return dict(type=type_, name=name)
+        return dict(type=name)
 
     def get_element_BY(self, target):
         if isinstance(target, dict):
@@ -76,8 +91,8 @@ class Scraper():
                 print('Error - Type ( {} ).'.format(_type))
 
         except Exception as e:
-            print('Exception: {}. \n {} -> {} - is not present in the page: {}'.format(e, _type, _target,
-                                                                                       self.webBrowser.current_url))
+            print('Exception: {}: {} -> {} - is not present in page: {}'.format(e, c.blue(_type), c.red(_target),
+                                                                                c.orange(self.webBrowser.current_url)))
 
         finally:
             if self.log and element is not None:
@@ -149,8 +164,8 @@ class Scraper():
                     element, _target)
 
         except Exception as e:
-            print('Exception: {}. \n {} -> {} - is not present in the page: {}'.format(e, _type, _target,
-                                                                                       self.webBrowser.current_url))
+            print('Exception: {}: {} -> {} - is not present in page: {}'.format(e, c.blue(_type), c.red(_target),
+                                                                                c.orange(self.webBrowser.current_url)))
 
         finally:
             if self.log and nested_element is not None:
